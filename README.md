@@ -30,7 +30,7 @@ public void onEnable() {
   
 ### Example Usage
 
-see [ExampleTabAdapter.java](ExampleTabAdapter.java)
+see [ExampleTabAdapter.java](https://github.com/bizarre/Azazel/blob/master/src/main/java/com/bizarrealex/azazel/tab/example/ExampleTabAdapter.java)
 
 #### Result
 ![result](https://i.gyazo.com/0d4d4ae6fb58a00f57cee614d8600727.png)
