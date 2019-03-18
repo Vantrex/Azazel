@@ -96,8 +96,6 @@ public class Tab {
                     String key = getNextBlank();
                     TabEntryPosition position = new TabEntryPosition(x, y, key, scoreboard);
 
-                    System.out.println(x * y);
-
                     entries.put(position, key);
 
                     ((CraftPlayer) player).getHandle().playerConnection.sendPacket(getPlayerPacket(entries.get(position)));
