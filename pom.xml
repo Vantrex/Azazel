@@ -6,57 +6,110 @@
 
     <groupId>com.bizarrealex</groupId>
     <artifactId>Azazel</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <distributionManagement>
+        <!-- Publish the versioned releases here -->
+        <repository>
+            <id>aspire-nexus</id>
+            <name>Azazel</name>
+            <url>http://212.114.59.24:8081/repository/maven-releases/</url>
+        </repository>
+
+        <!-- Publish the versioned releases here -->
+        <snapshotRepository>
+            <id>aspire-nexus</id>
+            <name>Azazel</name>
+            <url>http://212.114.59.24:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!-- download artifacts from this repo -->
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>fawe-repo</id>
+            <url>http://ci.athion.net/job/FastAsyncWorldEdit/ws/mvn/</url>
+        </repository>
+        <repository>
+            <id>aspire-nexus</id>
+            <name>aspire-nexus</name>
+            <url>http://212.114.59.24:8081/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- download plugins from this repo -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aspire-nexus</id>
+            <name>aspire-nexus</name>
+            <url>http://212.114.59.24:8081/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.aspiremc.repo</groupId>
+            <artifactId>coreartifacts</artifactId>
+            <version>1.6.2</version>
+            <classifier>protocolsupport</classifier>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.aspiremc.spigot</groupId>
+            <artifactId>server</artifactId>
+            <version>1.8.8-R0.2-RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <finalName>Azazel</finalName>
+                        </configuration>
                     </execution>
                 </executions>
-
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency> <!-- You should be able to use any spigot library (so long as it's not the API, as we're using packet classes) -->
-            <groupId>de.aspiremc.spigot</groupId>
-            <artifactId>server</artifactId>
-            <version>1.8.8-R0.2-RELEASE</version>
-        </dependency>
-        <dependency>  <!-- ProtocolSupport needed to get the version -->
-            <groupId>de.aspiremc.repo</groupId>
-            <artifactId>coreartifacts</artifactId>
-            <version>1.6.2</version>
-            <classifier>protocolsupport</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
-
 </project>
