@@ -104,6 +104,7 @@ public class AzazelTask extends BukkitRunnable {
         if(headerFooterDelay > -1){
             a++;
             if(a != headerFooterDelay) return;
+            a = 0;
         }
         TabTitleAdapter titleAdapter = azazel.getTabTitleAdapter();
         if(titleAdapter != null){
