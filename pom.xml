@@ -40,10 +40,15 @@
 
     <dependencies>
         <dependency> <!-- You should be able to use any spigot library (so long as it's not the API, as we're using packet classes) -->
-            <groupId>us.ikari.weeaboospigot</groupId>
-            <artifactId>weeaboospigot</artifactId>
-            <version>1.7.10-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>de.aspiremc.spigot</groupId>
+            <artifactId>server</artifactId>
+            <version>1.8.8-R0.2-RELEASE</version>
+        </dependency>
+        <dependency>  <!-- ProtocolSupport needed to get the version -->
+            <groupId>de.aspiremc.repo</groupId>
+            <artifactId>coreartifacts</artifactId>
+            <version>1.6.2</version>
+            <classifier>protocolsupport</classifier>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

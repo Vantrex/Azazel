@@ -1,5 +1,7 @@
 # Azazel
-A better player tab list library for Minecraft 1.7-1.8+
+A better player tab list library for Minecraft 1.7-1.8+ (For 1.8 spigot)
+
+Vantrex: "Added 1.8 tab header & footer support"
 
 ### Installation
 
@@ -16,14 +18,15 @@ Instantiate Azazel in your onEnable:
   ```java
 public void onEnable() {
       //All your other stuff
-      new Azazel(this, tabadapter);
+      new Azazel(this, tabadapter, titleadapter);
 }
   
   ```
   
 ### Example Usage
 
-see [ExampleTabAdapter.java](https://github.com/bizarre/Azazel/blob/master/src/main/java/com/bizarrealex/azazel/tab/example/ExampleTabAdapter.java)
-
+[ExampleTabAdapter.java](https://github.com/bizarre/Azazel/blob/master/src/main/java/com/bizarrealex/azazel/tab/example/ExampleTabAdapter.java)
+or
+[ExampleTabTitleAdapter.java](https://github.com/bizarre/Azazel/blob/master/src/main/java/com/bizarrealex/azazel/tab/example/ExampleTabTitleAdapter.java)
 #### Result
 ![result](https://i.gyazo.com/0d4d4ae6fb58a00f57cee614d8600727.png)

@@ -1,20 +1,19 @@
 package com.bizarrealex.azazel.tab;
 
 import com.bizarrealex.azazel.Azazel;
+import com.mojang.authlib.GameProfile;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_7_R4.Packet;
-import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
+
+import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,7 +42,8 @@ public class Tab {
                 tab.getElevatedTeam(player, azazel).addEntry(player.getName());
             }
 
-            PacketPlayOutPlayerInfo packet = PacketPlayOutPlayerInfo.removePlayer(((CraftPlayer)other).getHandle());
+            //  PacketPlayOutPlayerInfo packet = PacketPlayOutPlayerInfo.removePlayer(((CraftPlayer)other).getHandle());
+            PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER,((CraftPlayer) other).getHandle());
             ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
         }
 
@@ -90,7 +90,7 @@ public class Tab {
     }
 
     private void initialize(Player player) {
-        if (((CraftPlayer)player).getHandle().playerConnection.networkManager.getVersion() >= 47) {
+        if (ClientVersion.getVersion(player) == ClientVersion.v1_8) {
             for (int x = 0; x < 4; x++) {
                 for (int y = 0; y < 20; y++) {
                     String key = getNextBlank();
@@ -167,29 +167,26 @@ public class Tab {
         There should be a better way to do this without reflection
      */
     private static Packet getPlayerPacket(String name) {
-        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo();
 
-        Field action;
-        Field username;
-        Field player;
-        try {
-            action = PacketPlayOutPlayerInfo.class.getDeclaredField("action");
-            username = PacketPlayOutPlayerInfo.class.getDeclaredField("username");
-            player = PacketPlayOutPlayerInfo.class.getDeclaredField("player");
+        MinecraftServer server = MinecraftServer.getServer();
+// Get the Minecraft server object, required to create a player.
+// UPDATE:  In newer versions, this method returns null, so instead get the  MinecraftServer
+//         with this code instead:
+//    ((CraftServer) Bukkit.getServer()).getServer();
 
-            action.setAccessible(true);
-            username.setAccessible(true);
-            player.setAccessible(true);
+        WorldServer world = server.getWorldServer(0);
+// Get the world server for the overworld (0). Also required.
 
-            action.set(packet, 0);
-            username.set(packet, name);
-            player.set(packet, new GameProfile(UUID.randomUUID(), name));
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        PlayerInteractManager manager = new PlayerInteractManager(world);
+// Create a new player interact manager for the overworld.  Required.
+
+        GameProfile profile = new GameProfile(UUID.randomUUID(), name);
+
+        EntityPlayer player = new EntityPlayer(server, world, profile, manager);
+
+        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, player);
+
+
 
         return packet;
     }
